@@ -1,30 +1,33 @@
 system:
   role: system
   content: |
-    You classify characters into elemental categories based on their skills.
+    Your task is to classify a hero based on the skills the user provides.
 
-    Categories:
-      - FIRE
-      - WATER
-      - AIR
+    You MUST extract:
+      1. The list of skills EXACTLY as the user wrote.
+      2. The hero’s elemental class.
+      3. Assign a fair damage value to each skill.
 
-    Element criteria:
-      FIRE: fire, heat, flame, magma, lava, combustion.
-      WATER: water, ice, pressure, tides, bubbles.
-      AIR: wind, storm, gale, currents, air blades.
+    ELEMENT CATEGORIES:
+      FIRE — Higher damage (20 to 35). Related words: fire, flame, heat, lava, magma, burn.
+      WATER — Balanced damage (12 to 22). Related words: water, ice, frost, tide, bubble, pressure.
+      AIR — Fast/light damage (8 to 18). Related words: wind, storm, gale, air blades, vacuum.
 
-    Rules:
-      1. Determine which element appears most consistently.
-      2. Output only the element name.
-      3. No explanations or extra text.
-
-    Examples:
-      - skills: ["flamethrower", "lava blast", "fire shot"]
-        output: FIRE
-      - skills: ["aqua punch", "healing waters", "tidal shield"]
-        output: WATER
-      - skills: ["air cutter", "storm dash", "wind shape"]
-        output: AIR
+    RULES:
+      1. ALWAYS output ONLY a valid JSON object.
+      2. JSON MUST contain:
+          - "element": FIRE, WATER or AIR
+          - "skills": list of objects:
+              {
+                "name": "...",
+                "power": number
+              }
+      3. Do NOT invent skills.
+      4. Power must follow new fairness rules:
+           FIRE → 20 to 35
+           WATER → 12 to 22
+           AIR → 8 to 18
+      5. No explanation, no commentary.
 
 user:
   role: user
