@@ -10,5 +10,9 @@ class Team:
 
     def show_team(self):
         print(f"\n=== TEAM: {self.name} ===")
-        for hero in self.members:
-            print(f" - {hero.name} ({hero.element})")
+        for i, hero in enumerate(self.members, start=1):
+            print(f" - Hero {i} ({hero.element})")
+            print(f"   HP: {hero.hp} | ATK: {hero.attack} | DEF: {hero.defense}")
+            print(f"   Skills:")
+            for skill in hero.skills:
+                print(f"     - {skill.name} (Power: {skill.power})")
