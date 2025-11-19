@@ -9,8 +9,12 @@ import json
 class AISelector:
     def __init__(self, user_input):
         load_dotenv()
-        self.user_input = user_input
         self.hf_token = os.getenv("HF_TOKEN")
+        login(self.hf_token)
+
+        self.create_boss_prompt = 'ai_module/prompt/create_boss.yaml'
+        self.choose_skills_prompt = 'ai_module/prompt/choose_skills.yaml'
+        self.user_input = user_input
 
         self.pipeline = pipeline(
             "text-generation",
@@ -19,12 +23,7 @@ class AISelector:
             dtype=torch.bfloat16
         )
 
-        self.create_boss_prompt = 'ai_module/prompt/create_boss.yaml'
-        self.choose_skills_prompt = 'ai_module/prompt/choose_skills.yaml'
-
     def choose_hability(self):
-        login(self.hf_token)
-
         with open(self.choose_skills_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 
@@ -59,8 +58,6 @@ class AISelector:
 
         hero_json_str = json.dumps(hero_data, indent=2)
 
-        login(self.hf_token)
-        
         with open(self.create_boss_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 
