@@ -1,4 +1,4 @@
-from .hero import Hero
+from .Hero import Hero
 
 class Team:
     def __init__(self, name):

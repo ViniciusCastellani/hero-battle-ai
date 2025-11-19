@@ -19,12 +19,13 @@ class AISelector:
             dtype=torch.bfloat16
         )
 
-        self.yaml_path = 'ai_module/prompt/choose_skills.yaml'
+        self.create_boss_prompt = 'ai_module/prompt/create_boss.yaml'
+        self.choose_skills_prompt = 'ai_module/prompt/choose_skills.yaml'
 
     def choose_hability(self):
         login(self.hf_token)
 
-        with open(self.yaml_path, "r", encoding="utf-8") as f:
+        with open(self.choose_skills_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 
         system_prompt = prompt_data["system"]["content"]
@@ -42,11 +43,47 @@ class AISelector:
         output = self.pipeline(messages, max_new_tokens=300)
         cleaned = self.clean_json_output(output)
         return json.loads(cleaned)
+    
+    def create_boss(self, hero_info):
+        print('\n')
+        hero_data = {
+            "element": hero_info.element,
+            "skills": [
+                {
+                    "name": skill.name,
+                    "power": skill.power
+                }
+                for skill in hero_info.skills
+            ]
+        }
+
+        hero_json_str = json.dumps(hero_data, indent=2)
+
+        login(self.hf_token)
+        
+        with open(self.create_boss_prompt, "r", encoding="utf-8") as f:
+            prompt_data = yaml.safe_load(f)
+
+        system_prompt = prompt_data["system"]["content"]
+
+        user_prompt = prompt_data["user"]["content"].format(
+            user_input=hero_json_str
+        )
+
+        messages = [
+            [
+                {"role": "system", "content": [{"type": "text", "text": system_prompt}]},
+                {"role": "user", "content": [{"type": "text", "text": user_prompt}]},
+            ],
+        ]
+
+        output = self.pipeline(messages, max_new_tokens=300)
+        cleaned_boss = self.clean_json_output(output)
+        return json.loads(cleaned_boss)
 
     def clean_json_output(self, output):
         raw = output[0][0]["generated_text"][-1]["content"].strip()
 
-        # remove ```json fences
         if raw.startswith("```"):
             raw = raw.split("```", 1)[1].strip()
         if raw.endswith("```"):

@@ -1,34 +1,44 @@
 from ai_module.selector import AISelector
-from models.hero import Hero
-from models.skill import Skill
-from models.team import Team
+from models.Hero import Hero
+from models.Boss import Boss
+from models.Skill import Skill
+from models.Team import Team
+import json
 
 def main():
     userTeam = Team(name="User Team")
-    
-    # List of user inputs for different heroes
+        
+    """
+        Hero module
+            TODO - Implement flask's server to get the user input
+    """
+
     hero_inputs = [
-        "My hero has magma punch, air flow, flame burst and burning charge.",
-        "My hero has water splash, tsunami wave, and aqua shield.",
-        "My hero has wind blade, tornado spin, and air barrier."
+        "My hero has magma punch, hot waves, flame burst and burning charge.",
     ]
-    
+
     for user_input in hero_inputs:
         ai = AISelector(user_input)
         result = ai.choose_hability()
         
-        print("\nUSER INPUT:", user_input)
-        print("AI RESULT:", result)
+        print("USER INPUT:", user_input)
+        print('\n')
         
-        hero = Hero(element=result["element"])
-        for skill_data in result["skills"]:
-            name = skill_data["name"]
-            power = skill_data["power"]
-            hero.add_skill(Skill(name=name, power=power, element=hero.element))
+        hero = Hero(result)
+
+        hero.add_skill()
     
         userTeam.add_hero(hero)
         hero.show_info()
-    
+
+    """
+        Boss module
+    """
+    create_boss = ai.create_boss(hero)
+    boss = Boss(create_boss)
+    boss.add_skill()
+    boss.show_info()
+
     print("\n" + "="*40)
     userTeam.show_team()
 
