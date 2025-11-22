@@ -6,21 +6,22 @@ import torch
 import os
 import json
 
+
 class AISelector:
     def __init__(self, user_input):
         load_dotenv()
         self.hf_token = os.getenv("HF_TOKEN")
         login(self.hf_token)
 
-        self.create_boss_prompt = 'ai_module/prompt/create_boss.yaml'
-        self.choose_skills_prompt = 'ai_module/prompt/choose_skills.yaml'
+        self.create_boss_prompt = "ai_module/prompt/create_boss.yaml"
+        self.choose_skills_prompt = "ai_module/prompt/choose_skills.yaml"
         self.user_input = user_input
 
         self.pipeline = pipeline(
             "text-generation",
             model="google/gemma-3-1b-it",
             device="cuda",
-            dtype=torch.bfloat16
+            dtype=torch.bfloat16,
         )
 
     def choose_hability(self):
@@ -28,13 +29,14 @@ class AISelector:
             prompt_data = yaml.safe_load(f)
 
         system_prompt = prompt_data["system"]["content"]
-        user_prompt = prompt_data["user"]["content"].format(
-            user_input=self.user_input
-        )
+        user_prompt = prompt_data["user"]["content"].format(user_input=self.user_input)
 
         messages = [
             [
-                {"role": "system", "content": [{"type": "text", "text": system_prompt}]},
+                {
+                    "role": "system",
+                    "content": [{"type": "text", "text": system_prompt}],
+                },
                 {"role": "user", "content": [{"type": "text", "text": user_prompt}]},
             ],
         ]
@@ -42,41 +44,27 @@ class AISelector:
         output = self.pipeline(messages, max_new_tokens=300)
         cleaned = self.clean_json_output(output)
         return json.loads(cleaned)
-    
-    def create_boss(self, hero_info):
-        print('\n')
-        hero_data = {
-            "element": hero_info.element,
-            "skills": [
-                {
-                    "name": skill.name,
-                    "power": skill.power
-                }
-                for skill in hero_info.skills
-            ]
-        }
 
-        hero_json_str = json.dumps(hero_data, indent=2)
-
+    def create_boss(self, heroes_json_str):
         with open(self.create_boss_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 
         system_prompt = prompt_data["system"]["content"]
-
-        user_prompt = prompt_data["user"]["content"].format(
-            user_input=hero_json_str
-        )
+        user_prompt = prompt_data["user"]["content"].format(user_input=heroes_json_str)
 
         messages = [
             [
-                {"role": "system", "content": [{"type": "text", "text": system_prompt}]},
+                {
+                    "role": "system",
+                    "content": [{"type": "text", "text": system_prompt}],
+                },
                 {"role": "user", "content": [{"type": "text", "text": user_prompt}]},
             ],
         ]
 
         output = self.pipeline(messages, max_new_tokens=300)
-        cleaned_boss = self.clean_json_output(output)
-        return json.loads(cleaned_boss)
+        cleaned = self.clean_json_output(output)
+        return json.loads(cleaned)
 
     def clean_json_output(self, output):
         raw = output[0][0]["generated_text"][-1]["content"].strip()
@@ -92,4 +80,4 @@ class AISelector:
         if start == -1 or end == -1:
             raise ValueError("AI output does not contain valid JSON.")
 
-        return raw[start:end+1]
+        return raw[start : end + 1]

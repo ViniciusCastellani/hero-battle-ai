@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Battle System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">HERO AI FIGHT</h1>
+
+        <!-- Creation Phase -->
+        <div id="creation-phase" class="phase">
+            <div class="input-section">
+                <input type="text" id="hero-input"
+                    placeholder="Describe your hero (for example: fire warrior with flame blade)" class="hero-input">
+                <button id="create-hero-btn" class="btn btn-primary">Create hero and boss</button>
+            </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="canvas-container">
+            <canvas id="game-canvas" width="700" height="500"></canvas>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stats-column">
+                    <h2 class="stats-title hero-title">HERO STATS</h2>
+                    <div id="hero-stats"></div>
+                </div>
+
+                <div class="stats-column">
+                    <h2 class="stats-title boss-title">BOSS STATS</h2>
+                    <div id="boss-stats"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Creating your hero and boss...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
