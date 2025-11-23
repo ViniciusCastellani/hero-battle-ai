@@ -25,10 +25,16 @@ export function getContext() {
 }
 
 export function setHero(hero) {
+    if (hero && !hero.maxHp) {
+        hero.maxHp = hero.hp;
+    }
     gameState.hero = hero;
 }
 
 export function setBoss(boss) {
+    if (boss && !boss.maxHp) {
+        boss.maxHp = boss.hp;
+    }
     gameState.boss = boss;
 }
 
