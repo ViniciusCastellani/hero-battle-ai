@@ -2,7 +2,7 @@ from .Skill import Skill
 
 
 class Boss:
-    def __init__(self, result, hp=150):
+    def __init__(self, result, hp=120):
         self.boss_result = result
         self.boss_element = result["element"]
         self.hp = hp
