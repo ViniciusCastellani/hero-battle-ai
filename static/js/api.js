@@ -3,7 +3,10 @@ import { elements, setHero, setBoss } from './state.js';
 import { render } from './canvas.js';
 import { showLoading } from './utils.js';
 
-
+/**
+    Envia descrição do usuário ao backend, recebe herói e boss gerados por IA,
+    atualiza estado global e renderiza os personagens no canvas.
+*/
 export async function createHero() {
     if (!elements.heroInput) return;
 

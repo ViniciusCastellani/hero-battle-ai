@@ -8,7 +8,6 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-
 @app.route('/create-hero', methods=['POST'])
 def create_hero():
     try:
@@ -39,16 +38,13 @@ def create_hero():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-
 @app.route("/")
 def home():
     return render_template("index.html")
 
-
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "online", "message": "Servidor Flask rodando!"}), 200
-
 
 if __name__ == "__main__":
     print("HERO BATTLE SYSTEM - SERVIDOR FLASK")

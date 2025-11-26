@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeGame();
 });
 
+/**
+    Inicializa elementos DOM, configura canvas 2D, pré-carrega imagens,
+    adiciona event listeners e renderiza tela inicial.
+*/
 function initializeGame() {
     try {
         initializeDOMElements();
@@ -32,6 +36,9 @@ function initializeGame() {
     }
 }
 
+/**
+    Adiciona listeners para botão de criação e tecla Enter no input.
+*/
 function setupEventListeners() {
     try {
         if (elements.createHeroBtn) {

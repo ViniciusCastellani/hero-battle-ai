@@ -2,6 +2,9 @@ import { BATTLE_CONFIG } from './config.js';
 import { gameState, getHero, getBoss, setHero, setBoss } from './state.js';
 import { render } from './canvas.js';
 
+/**
+    Estado global da batalha: turno, defesa, log e resultado.
+*/
 export const battleState = {
     inBattle: false,
     currentTurn: null,
@@ -11,6 +14,9 @@ export const battleState = {
     winner: null
 };
 
+/**
+    Inicia nova batalha determinando aleatoriamente quem ataca primeiro.
+*/
 export function startBattle() {
     battleState.inBattle = true;
     battleState.gameOver = false;
@@ -31,7 +37,10 @@ export function startBattle() {
     render();
 }
 
-
+/**
+    Executa ataque do herói: calcula dano (attack + skill.power - boss.defense),
+    aplica ao boss, verifica vitória e passa turno para o boss.
+*/
 export function heroAttack(skillIndex) {
     if (!canHeroAct()) return;
 
@@ -69,6 +78,9 @@ export function heroAttack(skillIndex) {
     setTimeout(() => bossAttack(), BATTLE_CONFIG.TURN_DELAY);
 }
 
+/**
+    Ativa defesa do herói aumentando defense em 50% no próximo ataque recebido.
+*/
 export function heroDefend() {
     if (!canHeroAct()) return;
 
@@ -82,7 +94,10 @@ export function heroDefend() {
     setTimeout(() => bossAttack(), BATTLE_CONFIG.TURN_DELAY);
 }
 
-
+/**
+    Executa ataque do boss com habilidade aleatória, considerando bônus
+    de defesa se herói estiver defendendo, e passa turno para o herói.
+*/
 function bossAttack() {
     if (battleState.gameOver) return;
 
@@ -118,12 +133,18 @@ function bossAttack() {
     render();
 }
 
+/**
+    Verifica se herói pode agir: batalha ativa, turno dele e jogo não acabou.
+*/
 function canHeroAct() {
     return battleState.inBattle &&
         battleState.currentTurn === 'HERO' &&
         !battleState.gameOver;
 }
 
+/**
+    Finaliza batalha declarando vencedor e exibindo tela de resultado.
+*/
 function endBattle(winner) {
     battleState.gameOver = true;
     battleState.winner = winner;
@@ -138,6 +159,9 @@ function endBattle(winner) {
     render();
 }
 
+/**
+    Reinicia batalha com mesmos personagens restaurando HP ao máximo.
+*/
 export function resetBattle() {
     battleState.inBattle = false;
     battleState.currentTurn = null;
@@ -161,6 +185,9 @@ export function resetBattle() {
     render();
 }
 
+/**
+    Inicia novo jogo removendo herói e boss para forçar recriação via IA.
+*/
 export function newGame() {
     gameState.hero = null;
     gameState.boss = null;
@@ -168,6 +195,9 @@ export function newGame() {
     render();
 }
 
+/**
+    Adiciona mensagem ao log mantendo apenas as 10 entradas mais recentes.
+*/
 function addBattleLog(message) {
     battleState.battleLog.push({
         message,
@@ -179,22 +209,37 @@ function addBattleLog(message) {
     }
 }
 
+/**
+    Retorna array com histórico de eventos da batalha.
+*/
 export function getBattleLog() {
     return battleState.battleLog;
 }
 
+/**
+    Verifica se batalha está ativa.
+*/
 export function isBattleActive() {
     return battleState.inBattle;
 }
 
+/**
+    Verifica se jogo terminou.
+*/
 export function isGameOver() {
     return battleState.gameOver;
 }
 
+/**
+    Retorna de quem é o turno atual.
+*/
 export function getCurrentTurn() {
     return battleState.currentTurn;
 }
 
+/**
+    Retorna vencedor da batalha.
+*/
 export function getWinner() {
     return battleState.winner;
 }

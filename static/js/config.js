@@ -1,20 +1,11 @@
-// ============================================
-// API Configuration
-// ============================================
 export const API_URL = 'http://127.0.0.1:5000';
 
-// ============================================
-// Element Colors
-// ============================================
 export const ELEMENT_COLORS = {
     FIRE: '#ff6b35',
     WATER: '#4ecdc4',
     AIR: '#95e1d3'
 };
 
-// ============================================
-// Element Images
-// ============================================
 export const ELEMENT_IMAGES = {
     FIRE: '/static/images/Zuko.png',
     WATER: '/static/images/Katara.png',

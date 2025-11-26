@@ -6,7 +6,6 @@ import torch
 import os
 import json
 
-
 class AISelector:
     def __init__(self, user_input):
         load_dotenv()
