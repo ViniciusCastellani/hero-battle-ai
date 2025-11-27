@@ -1,5 +1,10 @@
 from .Skill import Skill
 
+"""
+Classe Hero: representa personagem do usuário com stats por elemento.
+Possui HP base e habilidades definidas por IA.
+Mesma lógica do Boss.
+"""
 
 class Hero:
     def __init__(self, result, hp=100):

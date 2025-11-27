@@ -5,6 +5,10 @@ import yaml
 import torch
 import os
 import json
+"""
+Classe AISelector: gerencia interação com modelo LLM para geração dos personagens.
+Utiliza Gemma-3-1b-it via HuggingFace para criar heróis e bosses, instruído via prompts YAML.
+"""
 
 class AISelector:
     def __init__(self, user_input):
@@ -24,6 +28,11 @@ class AISelector:
         )
 
     def choose_hability(self):
+        """
+        Gera herói com elemento e habilidades baseado na descrição do usuário.
+        Carrega prompt YAML, envia ao modelo e retorna JSON estruturado.
+        """
+            
         with open(self.choose_skills_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 
@@ -45,6 +54,11 @@ class AISelector:
         return json.loads(cleaned)
 
     def create_boss(self, heroes_json_str):
+        """
+        Gera boss adversário baseado nas características do herói.
+        Usa informações do herói como contexto para criar oponente balanceado.
+        """
+
         with open(self.create_boss_prompt, "r", encoding="utf-8") as f:
             prompt_data = yaml.safe_load(f)
 

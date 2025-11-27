@@ -5,11 +5,21 @@ from models.Hero import Hero
 from models.Boss import Boss
 import json
 
+"""
+API Flask para comunicação REST.
+Gerencia criação de personagens via IA e fornece endpoints REST.
+"""
+
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/create-hero', methods=['POST'])
 def create_hero():
+    """
+        Cria herói e boss baseado no input do usuário.
+        Processa descrição via IA e retorna os personagens com suas respectivas habilidades.
+    """
+
     try:
         dados = request.get_json()
         hero_input = dados.get('hero_input', '')

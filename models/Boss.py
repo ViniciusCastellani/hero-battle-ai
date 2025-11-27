@@ -1,5 +1,9 @@
 from .Skill import Skill
 
+"""
+Classe Boss: representa inimigo com stats balanceados por elemento.
+Possui HP elevado e habilidades geradas dinamicamente.
+"""
 
 class Boss:
     def __init__(self, result, hp=120):
@@ -33,6 +37,10 @@ class Boss:
 
     
     def add_skill(self):
+        """
+            Cria Skill a partir dos dados de habilidades
+        """
+
         for skill_data in self.boss_result["skills"]:
             name = skill_data["name"]
             power = skill_data["power"]
@@ -40,6 +48,10 @@ class Boss:
             self.skills.append(new_skill)
 
     def get_info_dict(self):
+        """
+            Retorna dicionário com todas as informações do boss.
+        """
+
         return {
             "element": self.boss_element,
             "hp": self.hp,
